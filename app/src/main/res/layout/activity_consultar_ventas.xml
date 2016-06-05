@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="fia.ues.sv.p2dr12004.ConsultarVentasActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ingrese Fecha y Zona"
+        android:textColor="@color/colorAccent"
+        android:textSize="30dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/editFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha: (ddmmaa)"
+        android:inputType="number"
+        android:maxLength="6"/>
+
+    <EditText
+        android:id="@+id/editCod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Codigo Zona: (slv)"
+        android:inputType="text"
+        android:maxLength="3"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:text="Buscar"
+        android:onClick="consultarVentas"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textSize="40dp"
+        android:hint="registros encontrados"
+        android:gravity="center"
+        android:textColor="@color/colorPrimaryDark"/>
+
+</LinearLayout>
