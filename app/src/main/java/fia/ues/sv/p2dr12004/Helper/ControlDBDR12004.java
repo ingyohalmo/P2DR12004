@@ -7,8 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import fia.ues.sv.p2dr12004.Controladores.ControlVenta;
-import fia.ues.sv.p2dr12004.Controladores.Zona;
+import fia.ues.sv.p2dr12004.Controladores.Autor;
+import fia.ues.sv.p2dr12004.Controladores.Publicaciones;
 
 /**
  * Created by yohalmo on 06-05-16.
@@ -26,7 +26,7 @@ public class ControlDBDR12004 {
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
-        private static final String BASE_DATOS = "parcial2.s3db";
+        private static final String BASE_DATOS = "parcial.s3db";
         private static final int VERSION = 1;
 
         public DatabaseHelper(Context context) {
@@ -36,8 +36,8 @@ public class ControlDBDR12004 {
         @Override
         public void onCreate(SQLiteDatabase db) {
             try {
-                db.execSQL("CREATE TABLE Zona(cod_zona CHAR(3) NOT NULL PRIMARY KEY, nom_zona CHAR(30), casas INTEGER, edif INTEGER, otros INTEGER); ");
-                db.execSQL("CREATE TABLE ControlVenta(num_venta CHAR(6) NOT NULL PRIMARY KEY, fecha_serv CHAR(6), cod_zona CHAR(3), es_casa CHAR(1), es_edif CHAR(1), es_otro CHAR(1)); ");
+                db.execSQL("CREATE TABLE Publicaciones(num_pub CHAR(6) NOT NULL PRIMARY KEY, fecha_pub CHAR(6) NOT NULL, cod_autor CHAR(4) NOT NULL, editorial CHAR(30) NOT NULL, valor_pub DOUBLE NOT NULL); ");
+                db.execSQL("CREATE TABLE Autor(cod_autor CHAR(4) NOT NULL PRIMARY KEY, nom_autor CHAR(30) NOT NULL, cant_libPub INTEGER); ");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -60,20 +60,19 @@ public class ControlDBDR12004 {
         DBHelper.close();
     }
 
-    public String insertar(Zona zona) {
+    public String insertar(Publicaciones publi) {
         String regInsertados = "Registro Insertado No= ";
         long contador = 0;
 
+        ContentValues pubs = new ContentValues();
 
-            ContentValues zonas = new ContentValues();
+        pubs.put("num_pub", publi.getNum_pub());
+        pubs.put("fecha_pub", publi.getFecha_pub());
+        pubs.put("cod_autor", publi.getCod_autor());
+        pubs.put("editorial", publi.getEditorial());
+        pubs.put("valor_pub", publi.getValor_pub());
 
-            zonas.put("cod_zona", zona.getCod_zona());
-            zonas.put("nom_zona", zona.getNom_zona());
-            zonas.put("casas", zona.getCasas());
-            zonas.put("edif", zona.getEdif());
-            zonas.put("otros", zona.getOtros());
-
-            contador = db.insert("Zona", null, zonas);
+        contador = db.insert("Publicaciones", null, pubs);
 
         if (contador == -1 || contador == 0) {
             regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción ";
@@ -84,23 +83,18 @@ public class ControlDBDR12004 {
         return regInsertados;
     }
 
-    public String insertar(ControlVenta controlV) {
+    public String insertar(Autor autor) {
         String regInsertados = "Registro Insertado No= ";
         long contador = 0;
 
 
-        if (verificarIntegridad(controlV,1)) {
-            ContentValues controles = new ContentValues();
+        ContentValues autores = new ContentValues();
 
-            controles.put("num_venta", controlV.getNum_venta());
-            controles.put("fecha_serv", controlV.getFecha_serv());
-            controles.put("cod_zona", controlV.getCod_zona());
-            controles.put("es_casa", controlV.getEs_casa());
-            controles.put("es_edif", controlV.getEs_edif());
-            controles.put("es_otro", controlV.getEs_otro());
+        autores.put("cod_autor", autor.getCod_autor());
+        autores.put("nom_autor", autor.getNom_autor());
+        autores.put("cant_libPub", autor.getCant_libPub());
 
-            contador = db.insert("ControlVenta", null, controles);
-        }
+        contador = db.insert("Autor", null, autores);
 
         if (contador == -1 || contador == 0) {
             regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción ";
@@ -111,38 +105,36 @@ public class ControlDBDR12004 {
         return regInsertados;
     }
 
-    public String eliminar(Zona zona){
+    public String eliminar(Autor autor) {
         String regAfectados = "filas afectadas= ";
         int contador = 0;
-        if (verificarIntegridad(zona, 3)) {
-            contador += db.delete("ControlVenta", "cod_zona='" + zona.getCod_zona() + "'", null);
+        if (verificarIntegridad(autor, 3)) {
+            contador += db.delete("Autor", "cod_autor='" + autor.getCod_autor() + "'", null);
         }
-        contador += db.delete("Zona", "cod_zona='" + zona.getCod_zona() + "'", null);
         regAfectados += contador;
         return regAfectados;
     }
 
-    public String actualizar(ControlVenta controlV) {
+    public String actualizar(Publicaciones pubs) {
 
-        if (verificarIntegridad(controlV, 2)) {
-            String[] id = {controlV.getNum_venta()};
+        if (verificarIntegridad(pubs, 2)) {
+            String[] id = {pubs.getNum_pub()};
             ContentValues cv = new ContentValues();
-            cv.put("fecha_serv", controlV.getFecha_serv());
-            cv.put("cod_zona", controlV.getCod_zona());
-            cv.put("es_casa", controlV.getEs_casa());
-            cv.put("es_edif", controlV.getEs_edif());
-            cv.put("es_otro", controlV.getEs_otro());
-            db.update("ControlVenta", cv, "num_venta = ?", id);
+            cv.put("fecha_pub", pubs.getFecha_pub());
+            cv.put("cod_autor", pubs.getCod_autor());
+            cv.put("editorial", pubs.getEditorial());
+            cv.put("valor_pub", pubs.getValor_pub());
+            db.update("Publicaciones", cv, "num_pub = ?", id);
             return "Registro Actualizado Correctamente";
         } else {
-            return "Registro con numero de venta " + controlV.getNum_venta() + " no existe";
+            return "Registro con numero de publicacion " + pubs.getNum_pub() + " no existe o verificar Autor " +pubs.getCod_autor() ;
         }
 
     }
 
-    public int consultarVentas(String fecha, String zona) {
+    public int consultarPubli(String fecha, String autor) {
 
-        Cursor cursor = db.rawQuery("select count(*) from ControlVenta where fecha_serv='" + fecha + "' and cod_zona='" + zona +"'", null);
+        Cursor cursor = db.rawQuery("select count(*) from Publicaciones where fecha_pub='" + fecha + "' and cod_autor='" + autor + "'", null);
         if (cursor.moveToFirst()) {
             int count = cursor.getInt(0);
             return count;
@@ -154,39 +146,28 @@ public class ControlDBDR12004 {
 
     private boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
         switch (relacion) {
-            case 1: {
-                //verificar que al insertar Venta Exista Zona
-                 ControlVenta controlV1 = (ControlVenta) dato;
-                String[] id = {controlV1.getCod_zona()};
-                //abrir();
-                Cursor cursor1 = db.query("Zona", null, "cod_zona = ?", id, null, null, null);
-
-                if (cursor1.moveToFirst()) {
-                    //Se encontraron datos
-                    return true;
-                }
-                return false;
-            }
             case 2: {
-                //verificar que exista venta
-                ControlVenta controlV2 = (ControlVenta) dato;
-                String[] id = {controlV2.getNum_venta()};
+                //verificar que exista Publicacion y Autor
+                Publicaciones publi2 = (Publicaciones) dato;
+                String[] id1 = {publi2.getNum_pub()};
+                String[] id2 = {publi2.getCod_autor()};
                 //abrir();
-                Cursor c2 = db.query("ControlVenta", null, "num_venta = ?", id, null, null, null);
+                Cursor c2 = db.query("Publicaciones", null, "num_pub = ?", id1, null, null, null);
+                Cursor c1 = db.query("Autor", null, "cod_autor = ?", id2, null, null, null);
 
-                if (c2.moveToFirst()) {
-                    //Se encontro Alumno
+                if (c2.moveToFirst() && c1.moveToFirst()) {
+
                     return true;
                 }
                 return false;
             }
             case 3: {
-                Zona zona = (Zona) dato;
-                Cursor c = db.query(true, "ControlVenta", new String[]{"cod_zona"}, "cod_zona='" + zona.getCod_zona() + "'", null, null, null, null, null);
+                Autor autor = (Autor) dato;
+                Cursor c = db.query(true, "Publicaciones", new String[]{"cod_autor"}, "cod_autor='" + autor.getCod_autor() + "'", null, null, null, null, null);
                 if (c.moveToFirst())
-                    return true;
-                else
                     return false;
+                else
+                    return true;
             }
 
             default:
@@ -196,41 +177,37 @@ public class ControlDBDR12004 {
 
     public String llenarDBDR12004() {
 
-        final String[] VZcod = {"slv", "sns", "ahc", "llb"};
-        final String[] VZnom = {"San Salvador", "Sonsonate", "Ahuachapan", "La Libertad"};
-        final int[] VZcasas = {200,50,20,150};
-        final int[] VZedif = {30, 15, 10, 20};
-        final int[] VZotros = {2,3,4,1};
-        final String[] VCVnum = {"000001", "000002", "000003", "000004"};
-        final String[] VCVfecha = {"051214", "23062015", "120916", "010614"};
-        final String[] VCVcod = {"slv", "sns", "ahc", "llb"};
-        final String[] VCVcasa = {"S", "N", "N", "N"};
-        final String[] VCVedif = {"N", "N", "S", "S"};
-        final String[] VCVotro = {"N", "S", "N", "N"};
+        // Valores Autor
+        final String[] VAcod = {"cs01", "cz02", "ec04", "jr02"};
+        final String[] VAnom = {"Carlos Sanchez", "Cristian Zapata", "Edwin Cardona", "James Rodriguez"};
+        final int[] VAcant = {10, 50, 20, 40};
+        // Valores Publicaciones
+        final String[] VPnum = {"000001", "000002", "000003", "000004"};
+        final String[] VPfecha = {"051214", "23062015", "120916", "010614"};
+        final String[] VPcod = {"cs01", "cs01", "ec04", "jr02"};
+        final String[] VPedit = {"Santillana", "Roger y Teyes", "Camargo", "Mc Graham"};
+        final Double[] VPvalor = {300.50, 40.25, 200.75, 1000.45};
 
         abrir();
-        db.execSQL("DELETE FROM Zona");
-        db.execSQL("DELETE FROM ControlVenta");
+        db.execSQL("DELETE FROM Publicaciones");
+        db.execSQL("DELETE FROM Autor");
 
-        Zona zona = new Zona();
+        Publicaciones publicaciones = new Publicaciones();
         for (int i = 0; i < 4; i++) {
-            zona.setCod_zona(VZcod[i]);
-            zona.setNom_zona(VZnom[i]);
-            zona.setCasas(VZcasas[i]);
-            zona.setEdif(VZedif[i]);
-            zona.setOtros(VZotros[i]);
-            insertar(zona);
+            publicaciones.setNum_pub(VPnum[i]);
+            publicaciones.setFecha_pub(VPfecha[i]);
+            publicaciones.setCod_autor(VPcod[i]);
+            publicaciones.setEditorial(VPedit[i]);
+            publicaciones.setValor_pub(VPvalor[i]);
+            insertar(publicaciones);
         }
 
-        ControlVenta ctrl = new ControlVenta();
+        Autor autor = new Autor();
         for (int i = 0; i < 4; i++) {
-            ctrl.setNum_venta(VCVnum[i]);
-            ctrl.setFecha_serv(VCVfecha[i]);
-            ctrl.setCod_zona(VCVcod[i]);
-            ctrl.setEs_casa(VCVcasa[i]);
-            ctrl.setEs_edif(VCVedif[i]);
-            ctrl.setEs_otro(VCVotro[i]);
-            insertar(ctrl);
+            autor.setCod_autor(VAcod[i]);
+            autor.setNom_autor(VAnom[i]);
+            autor.setCant_libPub(VAcant[i]);
+            insertar(autor);
         }
 
         cerrar();

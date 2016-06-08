@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="x86"
+    api-level="22"
+    density="xhdpi"
+    format="7"
+    timestamp="14545276665374" >
+
+    <task
+        name="javac"
+        duration="601" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="21" />
+    <task
+        name="verifier"
+        duration="1" />
+
+    <artifact
+        location="/home/yohalmo/AndroidStudioProjects/P2DR12004/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8/classes.dex"
+        type="DEX" />
+
+    <build timestamp="10390721182169" >
+        <artifact
+            location="/home/yohalmo/AndroidStudioProjects/P2DR12004/app/build/outputs/apk/app-debug.apk"
+            type="MAIN" />
+    </build>
+    <build timestamp="11137154275380" >
+        <artifact
+            location="/home/yohalmo/AndroidStudioProjects/P2DR12004/app/build/intermediates/res/resources-debug.ap_"
+            type="RESOURCES" />
+    </build>
+    <build timestamp="14386955288843" >
+        <artifact
+            location="/home/yohalmo/AndroidStudioProjects/P2DR12004/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_3/classes.dex"
+            type="DEX" />
+    </build>
+    <build timestamp="14545276665374" >
+        <artifact
+            location="/home/yohalmo/AndroidStudioProjects/P2DR12004/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8/classes.dex"
+            type="DEX" />
+    </build>
+
+</instant-run>

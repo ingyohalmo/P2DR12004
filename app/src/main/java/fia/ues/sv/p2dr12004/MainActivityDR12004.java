@@ -13,8 +13,8 @@ import fia.ues.sv.p2dr12004.Helper.ControlDBDR12004;
 
 public class MainActivityDR12004 extends ListActivity {
 
-    String[] menu = {"Eliminar Zona", "Actualizar ControlVenta", "Consultar Ventas", "LLenar Base de Datos"};
-    String[] activities = {"ZonaEliminarActivity", "ControlVentaActualizarActivity", "ConsultarVentasActivity"};
+    String[] menu = {"Eliminar Autor", "Actualizar Publicaciones", "Consultar Publicaciones", "LLenar Base de Datos"};
+    String[] activities = {"EliminarAutor", "ActualizarPublicaciones", "ConsultarPublicaciones"};
     ControlDBDR12004 BDhelper;
 
     @Override

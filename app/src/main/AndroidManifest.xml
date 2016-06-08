@@ -15,9 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ZonaEliminarActivity" />
-        <activity android:name=".ControlVentaActualizarActivity" />
-        <activity android:name=".ConsultarVentasActivity"></activity>
+        <activity android:name=".EliminarAutor" />
+        <activity android:name=".ActualizarPublicaciones" />
+        <activity android:name=".ConsultarPublicaciones"></activity>
     </application>
 
 </manifest>

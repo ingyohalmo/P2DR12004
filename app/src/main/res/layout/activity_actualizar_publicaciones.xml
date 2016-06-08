@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dip"
+    android:stretchColumns="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Actualizar Publicacion"
+        android:textSize="35dp"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"
+        android:paddingBottom="20dp"/>
+
+    <TableRow>
+
+        <TextView android:text="Numero Publicacion" />
+
+        <EditText
+            android:id="@+id/editNumPub"
+            android:inputType="number"
+            android:maxLength="6" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView android:text="Fecha Publicacion" />
+
+        <EditText
+            android:id="@+id/editFechaPub"
+            android:inputType="number"
+            android:maxLength="6" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView android:text="Codigo Autor" />
+
+        <EditText
+            android:id="@+id/editCodAutor"
+            android:inputType="text"
+            android:maxLength="4" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView android:text="Editorial" />
+
+        <EditText
+            android:id="@+id/editEdit"
+            android:inputType="text"
+            android:maxLength="30" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView android:text="Valor Publicacion" />
+
+        <EditText
+            android:id="@+id/editValorPub"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:onClick="actualizarPublicacion"
+            android:text="Actualizar" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:onClick="limpiarTexto"
+            android:text="Limpiar Texto" />
+    </TableRow>
+    />
+</TableLayout>
+
